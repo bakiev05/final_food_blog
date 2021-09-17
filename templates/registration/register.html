@@ -1,0 +1,11 @@
+<h2>Sing up</h2>
+<form action="" method="POST">
+    {% csrf_token %}
+    {{ form.as_p}}
+    <div class="mb-3">
+
+    </div>
+    <div class="submit">
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+    </div>
+</form>
