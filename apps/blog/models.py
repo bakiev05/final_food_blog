@@ -24,7 +24,7 @@ class Post(models.Model):
         db_index=True,
         verbose_name='Название'
     )
-    description = RichTextField(
+    description = models.TextField(
         verbose_name='Описание',
         blank=True, null=True
     )
@@ -66,9 +66,6 @@ class Post(models.Model):
 
     def __str__(self):
         return f"{self.title}"
-
-
-
 
 
 class PostImage(models.Model):
@@ -129,7 +126,6 @@ class RecipeVideo(models.Model):
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes_user')
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes_post')
-
 
     def __str__(self):
         return f"{self.user.username} -- {self.post.title}"
