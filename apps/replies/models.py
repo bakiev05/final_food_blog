@@ -10,7 +10,8 @@ class Reply(models.Model):
     user = models.ForeignKey(
         User,
         related_name='reply_user',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        blank=True, null=True,
     )
     post = models.ForeignKey(
         Post,
@@ -18,5 +19,5 @@ class Reply(models.Model):
         on_delete=models.CASCADE
     )
 
-    def __str__(self):
-        return f"{self.post.id} -- {self.user.id}"
+    def get_reply(self):
+        return self.reply_post.all()

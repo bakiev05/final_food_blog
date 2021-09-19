@@ -35,11 +35,16 @@ class RecipeAdmin(admin.ModelAdmin):
     inlines = [RecipeVideoInline]
 
 
+@admin.register(Reply)
+class ReplyAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'post']
+
+
 admin.site.register(User)
 admin.site.register(models.RecipeVideo)
 admin.site.register(models.PostImage)
 
 admin.site.register(Category, MPTTModelAdmin)
-admin.site.register(Reply)
+
 admin.site.register(models.Like)
 admin.site.register(models.Tag)

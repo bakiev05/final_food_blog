@@ -19,7 +19,7 @@
                         <ul class="widget">
                             <li>by {{post.author}}</li>
                             <li>3 min read</li>
-                            <li>20 Comment</li>
+                            <li>{{ post.get_reply.count }} Comments</li>
                         </ul>
                     </div>
                 </div>
@@ -108,88 +108,35 @@
                         </div>
                     </div>
                 </div>
-                <div class="single-post__author__profile">
-                    <div class="single-post__author__profile__pic">
-                        <img src="img/categories/single-post/author-profile.jpg" alt="">
-                    </div>
-                    <div class="single-post__author__profile__text">
-                        <h4>Lena Mollein.</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                        <div class="single-post__author__profile__social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-google-plus"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-youtube-play"></i></a>
-                        </div>
-                    </div>
-                </div>
+
                 <div class="single-post__comment">
                     <div class="widget__title">
-                        <h4>03 Comment</h4>
+                        <h4>{{ post.get_reply.count }} Comments</h4>
                     </div>
+                    {% for reply in post.get_reply %}
                     <div class="single-post__comment__item">
                         <div class="single-post__comment__item__pic">
                             <img src="{% static 'img/categories/single-post/comment/comment-1.jpg' %}" alt="">
                         </div>
+
                         <div class="single-post__comment__item__text">
-                            <h5>Brandon Kelley</h5>
+                            <h5>{{reply.user}}</h5>
                             <span>15 Aug 2017</span>
-                            <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                                adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore
-                                magnam.</p>
-                            <ul>
-                                <li><a href="#"><i class="fa fa-heart-o"></i></a></li>
-                                <li><a href="#"><i class="fa fa-share-square-o"></i></a></li>
-                            </ul>
+                            <p>{{reply.text}}</p>
                         </div>
+
                     </div>
-                    <div class="single-post__comment__item single-post__comment__item--reply">
-                        <div class="single-post__comment__item__pic">
-                            <img src="{% static 'img/categories/single-post/comment/comment-2.jpg' %}" alt="">
-                        </div>
-                        <div class="single-post__comment__item__text">
-                            <h5>Brandon Kelley</h5>
-                            <span>15 Aug 2017</span>
-                            <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                                adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore
-                                magnam.</p>
-                            <ul>
-                                <li><a href="#"><i class="fa fa-heart-o"></i></a></li>
-                                <li><a href="#"><i class="fa fa-share-square-o"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="single-post__comment__item">
-                        <div class="single-post__comment__item__pic">
-                            <img src="img/categories/single-post/comment/comment-3.jpg" alt="">
-                        </div>
-                        <div class="single-post__comment__item__text">
-                            <h5>Brandon Kelley</h5>
-                            <span>15 Aug 2017</span>
-                            <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                                adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore
-                                magnam.</p>
-                            <ul>
-                                <li><a href="#"><i class="fa fa-heart-o"></i></a></li>
-                                <li><a href="#"><i class="fa fa-share-square-o"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                    {% endfor %}
+
                 <div class="single-post__leave__comment">
                     <div class="widget__title">
                         <h4>Leave a comment</h4>
                     </div>
-                    <form action="#">
+                    <form action="{% url 'create_reply' pk=post.id%}" method="post">
+                        {% csrf_token %}
                         <div class="input-list">
-                            <input type="text" placeholder="Name">
-                            <input type="text" placeholder="Email">
-                            <input type="text" placeholder="Website">
+                          {{ form.text }}
                         </div>
-                        <textarea placeholder="Message"></textarea>
                         <button type="submit" class="site-btn">Submit</button>
                     </form>
                 </div>

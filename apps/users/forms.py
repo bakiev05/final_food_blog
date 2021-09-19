@@ -6,14 +6,14 @@ from django.contrib.auth.forms import UserCreationForm
 class UserRegistrationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = (
-            'username',
-            'email',
-            'age',
-            'bio',
-            'gender',
-            'profile'
-        )
+        # fields = (
+        #     'username',
+        #     'email',
+        #     'age',
+        #     'bio',
+        #     'gender',
+        #     'profile'
+        # )
 
     widgets = {
         'username': forms.TextInput(attrs={'class': "form-control"}),
