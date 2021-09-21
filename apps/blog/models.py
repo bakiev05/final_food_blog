@@ -1,5 +1,6 @@
 from django.db import models
 from ckeditor.fields import RichTextField
+from embed_video.fields import EmbedVideoField
 from django.urls import reverse
 from apps.users.models import User
 from apps.categories.models import Category
@@ -16,6 +17,7 @@ class Tag(models.Model):
 class Post(models.Model):
     author = models.ForeignKey(
         User,
+        null=True,
         on_delete=models.CASCADE,
         related_name='user_post'
     )
@@ -55,8 +57,8 @@ class Post(models.Model):
     def get_recipes(self):
         return self.recipe.all()
 
-    def get_image_recipes(self):
-        return self.recipe_image.all()
+    def get_user_profile(self):
+        return self.user_post.all()
 
     def get_reply(self):
         return self.reply_post.all()
@@ -113,6 +115,7 @@ class RecipeVideo(models.Model):
         null=True, blank=True,
         verbose_name="video"
     )
+    link = EmbedVideoField()
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
@@ -129,5 +132,3 @@ class Like(models.Model):
 
     def __str__(self):
         return f"{self.user.username} -- {self.post.title}"
-
-

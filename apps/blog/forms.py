@@ -13,13 +13,14 @@ class RecipeForm(forms.ModelForm):
 
 class RecipeVideoForm(forms.ModelForm):
     class Meta:
+        exclude = ['post']
         model = RecipeVideo
         fields = ['video']
 
 
 class PostForm(forms.ModelForm):
     class Meta:
-        exclude = ['create_at']
+        exclude = ['create_at', 'author']
         model = Post
         widgets = {
             'title': forms.TextInput(attrs={'class': "form-control"}),
@@ -37,8 +38,8 @@ class PostImageForm(forms.ModelForm):
         }
 
 
-PostImageFormSet = inlineformset_factory(Post,
-                                         PostImage,
-                                         form=PostImageForm,
-                                         extra=2,
-                                         )
+PostInlineFormSet = inlineformset_factory(Post,
+                                          PostImage,
+                                          form=PostImageForm,
+                                          extra=2,
+                                          )

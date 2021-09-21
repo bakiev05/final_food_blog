@@ -6,5 +6,12 @@
         {% get_categories %}
         <li><a href="{% url 'about' %}">About</a></li>
         <li><a href="{% url 'contact' %}">Contact</a></li>
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'profile' user.id %}">Profile</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">LogOut</a></li>
+        {% else %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Registration</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">LogIn</a></li>
+        {% endif %}
     </ul>
 </nav>

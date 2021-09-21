@@ -4,8 +4,8 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     GENDER_CHOICES = (
-        ('m', 'Men'),
-        ('f', 'Female'),
+        ('man', 'Men'),
+        ('female', 'Female'),
         ("Another", 'another'),
     )
     username = models.CharField(

@@ -1,5 +1,6 @@
 {% extends 'index.html' %}
 {% load static %}
+{% load embed_video_tags %}
 {% block content %}
 <section class="single-post spad">
     <div class="single-post__hero set-bg" data-setbg="{{ post.post_image.first.image.url }}"></div>
@@ -61,9 +62,16 @@
                     </div>
                 </div>
 
+
                 <video width='600' controls="controls">
                     <source src="{{recipe.video_recipe.first.video.url}}" typeof='video/mp4'>
                 </video>
+                <!-- link passed to embed code, this shows up as blank -->
+
+
+
+                </li>
+
                 {% endfor %}
 
 
@@ -116,7 +124,9 @@
                     {% for reply in post.get_reply %}
                     <div class="single-post__comment__item">
                         <div class="single-post__comment__item__pic">
-                            <img src="{% static 'img/categories/single-post/comment/comment-1.jpg' %}" alt="">
+                            {% for profile_image in get_user_profile %}
+                            <img src="{{ profile_image.first.profile.url }}" alt="">
+                            {% endfor %}
                         </div>
 
                         <div class="single-post__comment__item__text">
@@ -128,21 +138,21 @@
                     </div>
                     {% endfor %}
 
-                <div class="single-post__leave__comment">
-                    <div class="widget__title">
-                        <h4>Leave a comment</h4>
-                    </div>
-                    <form action="{% url 'create_reply' pk=post.id%}" method="post">
-                        {% csrf_token %}
-                        <div class="input-list">
-                          {{ form.text }}
+                    <div class="single-post__leave__comment">
+                        <div class="widget__title">
+                            <h4>Leave a comment</h4>
                         </div>
-                        <button type="submit" class="site-btn">Submit</button>
-                    </form>
+                        <form action="{% url 'create_reply' pk=post.id%}" method="post">
+                            {% csrf_token %}
+                            <div class="input-list">
+                                {{ form.text }}
+                            </div>
+                            <button type="submit" class="site-btn">Submit</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 </section>
 {% endblock %}
 

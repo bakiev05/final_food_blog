@@ -22,3 +22,15 @@ class UserRegistrationForm(UserCreationForm):
         'age': forms.NumberInput(attrs={'class': 'form-control'}),
         'gender': forms.Select(attrs={'class': 'form-control'}),
     }
+
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        fields = '__all__'
+        widgets = {
+            'username': forms.TextInput(attrs={'class': "form-control"}),
+            'profile': forms.FileInput(attrs={'class': "form-control"}),
+            'bio': forms.TextInput(attrs={'class': 'form-control'}),
+            'age': forms.NumberInput(attrs={'class': 'form-control'}),
+            'gender': forms.Select(attrs={'class': 'form-control'}),
+        }
