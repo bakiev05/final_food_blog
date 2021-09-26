@@ -1,8 +1,5 @@
 from django import forms
-from django.forms.models import inlineformset_factory
-from apps.blog.models import Recipe, RecipeVideo, \
-    Post, \
-    PostImage
+from apps.blog.models import Recipe, Post
 
 
 class RecipeForm(forms.ModelForm):
@@ -11,35 +8,8 @@ class RecipeForm(forms.ModelForm):
         fields = '__all__'
 
 
-class RecipeVideoForm(forms.ModelForm):
-    class Meta:
-        exclude = ['post']
-        model = RecipeVideo
-        fields = ['video']
-
-
 class PostForm(forms.ModelForm):
     class Meta:
         exclude = ['create_at', 'author']
         model = Post
-        widgets = {
-            'title': forms.TextInput(attrs={'class': "form-control"}),
-            'description': forms.Textarea(attrs={'class': 'form-control'}),
-            'category': forms.Select(attrs={'class': 'form-control'}),
-        }
-
-
-class PostImageForm(forms.ModelForm):
-    class Meta:
-        model = PostImage
-        fields = ['image', ]
-        widgets = {
-            'image': forms.ClearableFileInput(attrs={'class': 'form-control'})
-        }
-
-
-PostInlineFormSet = inlineformset_factory(Post,
-                                          PostImage,
-                                          form=PostImageForm,
-                                          extra=2,
-                                          )
+        fields = '__all__'

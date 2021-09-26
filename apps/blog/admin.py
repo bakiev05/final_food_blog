@@ -6,16 +6,6 @@ from apps.users.models import User
 from apps.categories.models import Category
 
 
-class PostImageInline(admin.StackedInline):
-    model = models.PostImage
-    extra = 1
-
-
-class RecipeVideoInline(admin.StackedInline):
-    model = models.RecipeVideo
-    extra = 1
-
-
 class RecipeInline(admin.StackedInline):
     model = models.Recipe
     extra = 1
@@ -24,7 +14,9 @@ class RecipeInline(admin.StackedInline):
 @admin.register(models.Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ['author', 'title', 'category', 'create_at', 'id']
-    inlines = [PostImageInline, RecipeInline]
+    inlines = [RecipeInline]
+    search_fields = ('title', 'category__title', 'author__username')
+    list_filter = ('category', 'author')
     save_as = True
     save_on_top = True
 
@@ -32,19 +24,18 @@ class PostAdmin(admin.ModelAdmin):
 @admin.register(models.Recipe)
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ['title', 'cook_time', 'ingredients', 'post', 'process']
-    inlines = [RecipeVideoInline]
+    search_fields = ('title', 'post__title',)
+    list_filter = ('post',)
 
 
 @admin.register(Reply)
 class ReplyAdmin(admin.ModelAdmin):
     list_display = ['id', 'user', 'post']
+    search_fields = ('user__username', 'post__title',)
+    list_filter = ('user', 'post')
+    readonly_fields = ('user', 'post')
 
 
 admin.site.register(User)
-admin.site.register(models.RecipeVideo)
-admin.site.register(models.PostImage)
-
 admin.site.register(Category, MPTTModelAdmin)
-
-admin.site.register(models.Like)
 admin.site.register(models.Tag)

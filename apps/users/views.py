@@ -18,9 +18,8 @@ class UserLogin(LoginView):
     redirect_authenticated_user = True
 
 
-def user_posts(request, id):
+def profile(request, id):
     user_obj = get_object_or_404(User, id=id)
-    user_posts = Post.objects.filter(author=request.user)
     return render(request, 'user/user_posts.html', locals())
 
 

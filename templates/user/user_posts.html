@@ -1,8 +1,9 @@
 {% extends 'index.html' %}
 {% block content %}
-<h3>Your posts</h3>
+
 {% for post in user_posts %}
 <div class="categories__post__item">
+
     <div class="categories__post__item__pic small__item set-bg" data-setbg="{{ post.post_image.first.image.url }}"
          style="width: 308px; height: 255px">
         <div class="post__meta">
@@ -32,7 +33,9 @@
         <li class="list-group-item">Bio:{{user_obj.bio}}</li>
         <li class="list-group-item">Age: {{ user_obj.age }}</li>
         <li class="list-group-item">Gender: {{ user_obj.gender }}</li>
+        {% if user_obj.profile %}
         <img src="{{ user_obj.profile.url }}">
+        {% endif %}
     </ul>
 </div>
 

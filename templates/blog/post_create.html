@@ -1,11 +1,12 @@
 {% extends 'index.html' %}
+{% load crispy_forms_tags %}
 {% block content %}
-<form method="POST" enctype="multipart/form-data" action=".">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <table class="table">
         {{ formset.management_form }}
-
+        {{ formset.non_form_errors }}
         {% for form in formset.forms %}
         {% if forloop.first %}
         <thead>
@@ -32,15 +33,9 @@
         </tr>
         {% endfor %}
     </table>
-    <button type="submit" class="btn btn-success d-block mx-auto" , value="Submit">Создать</button>
+    <button type="submit" class="btn btn-success d-block mx-auto">Создать</button>
 </form>
-<script type="text/javascript">
-    $(function() {
-        $('#father-form tr').formset({
-            prefix: '{{ inlines.prefix }}'
-        });
-    })
-
-
-</script>
+</div>
+</div>
+</div>
 {% endblock %}

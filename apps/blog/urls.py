@@ -4,6 +4,7 @@ from apps.contact.views import ContactView, AboutView, CreateContact
 
 urlpatterns = [
     path('create_post/', views.create_post, name='create_post'),
+    # path('search/', views.display_posts, name="search"),
     path('update_post/<int:id>/', views.update_post, name='update_post'),
     path('delete_post/<int:id>/', views.delete_post, name='delete_post'),
     path('contact/', ContactView.as_view(), name="contact"),

@@ -6,7 +6,7 @@
             {% for post in list_last_post %}
             <div class="header__megamenu__item">
                 <div class="header__megamenu__item--pic set-bg"
-                    data-setbg="{{ post.post_image.first.image.url }}">
+                    data-setbg="{{ post.image.url }}">
                     <div class="label">{{ post.category.title }}</div>
                 </div>
                 <div class="header__megamenu__item--text">

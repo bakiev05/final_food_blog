@@ -1,4 +1,4 @@
-{% load menu_tags social_tags cache %}
+{% load menu_tags social_tags cache socialaccount %}
 <div class="humberger__menu__overlay"></div>
 <div class="humberger__menu__wrapper">
     <div class="humberger__menu__logo">
@@ -20,6 +20,8 @@
             {% else %}
             <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Registration</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">LogIn</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% provider_login_url 'google' %}">LogIn with Google</a></li>
+
 
             {% endif %}
         </ul>

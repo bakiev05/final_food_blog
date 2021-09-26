@@ -1,13 +1,11 @@
 from django.views import generic
 from apps.blog import models
-from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render, get_object_or_404
 from django.forms import inlineformset_factory
 from apps.replies.forms import ReplyForm
 from apps.replies.models import Reply
-
-from apps.blog.forms import PostForm, PostImageForm, PostInlineFormSet, RecipeForm, RecipeVideoForm
+from apps.blog.forms import PostForm, RecipeForm
 
 
 class HomeView(generic.ListView):
@@ -20,6 +18,7 @@ class PostListView(generic.ListView):
     model = models.Post
     template_name = 'blog/post_list.html'
     context_object_name = 'post_list'
+    paginate_by = 9
 
     def get_queryset(self):
         return models.Post.objects.filter(
@@ -55,31 +54,34 @@ class CreateReply(generic.CreateView):
 
 def create_post(request):
     form = PostForm(request.POST, None)
-    PostImageFormSet = inlineformset_factory(models.Post, models.PostImage, form=PostImageForm, extra=1)
+    RecipeFormSet = inlineformset_factory(models.Post, models.Recipe, form=RecipeForm, extra=1)
     if form.is_valid():
-        post = form.save()
+        post = models.Post()
+        post = form.save(commit=False)
         post.author = request.user
-        formset = PostImageFormSet(request.POST, request.FILES, instance=post)
+        post.description = form.cleaned_data['description']
+        post.save()
+        formset = RecipeFormSet(request.POST, request.FILES, instance=post)
         if formset.is_valid():
             formset.save()
             return redirect('home')
-    formset = PostImageFormSet()
+    formset = RecipeFormSet()
     return render(request, 'blog/post_create.html', locals())
 
 
 def update_post(request, id):
     post = get_object_or_404(models.Post, id=id)
     form = PostForm(request.POST, None, instance=post)
-    PostImageFormSet = inlineformset_factory(models.Post, models.PostImage, form=PostImageForm, extra=0)
+    RecipeFormSet = inlineformset_factory(models.Post, models.Recipe, form=RecipeForm, extra=0)
     if request.user == post.author:
         if form.is_valid():
             post.author = request.user
             post = form.save()
-            formset = PostImageFormSet(request.POST, request.FILES, instance=post)
+            formset = RecipeFormSet(request.POST, request.FILES, instance=post)
             if formset.is_valid():
                 formset.save()
                 return redirect('home')
-        formset = PostImageFormSet(instance=post)
+        formset = RecipeFormSet(instance=post)
     return render(request, 'blog/post_update.html', locals())
 
 
@@ -93,8 +95,3 @@ def delete_post(request, id):
             recipe.delete()
         return redirect('home')
     return render(request, 'blog/post_delete.html', locals())
-
-
-
-
-

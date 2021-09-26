@@ -32,12 +32,12 @@ class Post(models.Model):
     )
     tags = models.ManyToManyField(
         Tag,
-        related_name="post"
+        related_name="post",
+        blank=True
     )
     create_at = models.DateTimeField(
         auto_now_add=True,
-        null=True,
-        blank=True
+        null=True, blank=True
     )
     slug = models.SlugField(
         max_length=200,
@@ -49,6 +49,10 @@ class Post(models.Model):
         related_name='post_category',
         on_delete=models.SET_NULL,
         null=True
+    )
+    image = models.FileField(
+        upload_to='post_image',
+        blank=True, null=True
     )
 
     class Meta:
@@ -70,21 +74,6 @@ class Post(models.Model):
         return f"{self.title}"
 
 
-class PostImage(models.Model):
-    image = models.ImageField(
-        upload_to='post_image',
-        verbose_name='Картинки',
-        blank=True, null=True
-    )
-    post = models.ForeignKey(
-        Post, on_delete=models.CASCADE,
-        related_name='post_image'
-    )
-
-    def __str__(self):
-        return f"{self.post.title} -- {self.post.id}"
-
-
 class Recipe(models.Model):
     title = models.CharField(
         max_length=100
@@ -104,31 +93,18 @@ class Recipe(models.Model):
         blank=True,
         null=True
     )
+    video = models.FileField(
+        upload_to='videos/',
+        null=True, blank=True,
+    )
 
     def __str__(self):
         return f'{self.title}'
 
 
-class RecipeVideo(models.Model):
-    video = models.FileField(
-        upload_to='videos/',
-        null=True, blank=True,
-        verbose_name="video"
-    )
-    link = EmbedVideoField()
-    recipe = models.ForeignKey(
-        Recipe,
-        on_delete=models.CASCADE,
-        related_name='video_recipe'
-    )
-
-    def __str__(self):
-        return f'id:{self.recipe.id}, --- name: {self.recipe}'
-
-
-class Like(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes_user')
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes_post')
-
-    def __str__(self):
-        return f"{self.user.username} -- {self.post.title}"
+# class Like(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes_user')
+#     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes_post')
+#
+#     def __str__(self):
+#         return f"{self.user.username} -- {self.post.title}"
