@@ -12,15 +12,16 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import django_heroku
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = 'oiybiubn'
+SECRET_KEY = 'django-insecure-eygf-9o^3^a#gw4y(v66%0qpk98byydli5o8ni&t+t-8$7n1uz'
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get('DEBUG', default=1))
+DEBUG = True
 
-ALLOWED_HOSTS = '*'
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -187,3 +188,5 @@ CACHES = {
         'LOCATION': os.path.join(BASE_DIR, 'cache'),
     }
 }
+
+django_heroku.settings(locals())

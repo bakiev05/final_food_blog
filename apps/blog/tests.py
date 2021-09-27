@@ -1,6 +1,7 @@
 from django.test import TestCase, RequestFactory
 from django.urls import reverse, resolve
 from django.contrib.auth import get_user_model
+from django.core.files.uploadedfile import SimpleUploadedFile
 from unittest import mock
 from django.test import Client
 from apps.blog.views import HomeView
@@ -18,9 +19,9 @@ class PostTestCase(TestCase):
         self.post = Post.objects.create(
             author=self.user,
             title='dinner',
-            tags=self.tag,
             slug='dinner',
             category=self.category,
+            image=SimpleUploadedFile('post_image.jpg', content=b'', content_type='image/jpg')
         )
         self.recipe = Recipe.objects.create(
             title='tile recipe',
@@ -29,26 +30,19 @@ class PostTestCase(TestCase):
             post=self.post,
             process='a lot of time',
         )
+        return super().setUp()
 
-    def test_mock_homepage(self):
-        mock_data = mock.Mock(status_code=200)
-        with mock.patch('apps.blog.views.HomeView.get', return_value=mock_data) as mock_data:
-            factory = RequestFactory()
-            request = factory.get('')
-            response = HomeView.as_view()(request)
-            self.assertEqual(response.status_code, 200)
-
-    def test_get_home_view(self):
+    def test_get_home_url(self):
         url = reverse('home')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
-    def test_post_detail(self):
-        post = Post.objects.first()
-        url = reverse('post_detail', kwargs={'pk': post.id})
+    def test_post_list_url(self):
+        url = reverse('post_list', args=['some_slug'])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
-    def test_root_url_resolves_to_home_page_view(self):
-        found = resolve('/')
-        self.assertEqual(found.func, HomeView.as_view())
+    def post_detail_url(self):
+        url = reverse('post_detail', kwargs={'some_slug': 'post_slug'})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)

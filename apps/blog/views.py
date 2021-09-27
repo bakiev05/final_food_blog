@@ -53,7 +53,7 @@ class CreateReply(generic.CreateView):
 
 
 def create_post(request):
-    form = PostForm(request.POST, None)
+    form = PostForm(request.POST, request.FILES, None)
     RecipeFormSet = inlineformset_factory(models.Post, models.Recipe, form=RecipeForm, extra=1)
     if form.is_valid():
         post = models.Post()
@@ -71,7 +71,7 @@ def create_post(request):
 
 def update_post(request, id):
     post = get_object_or_404(models.Post, id=id)
-    form = PostForm(request.POST, None, instance=post)
+    form = PostForm(request.POST, request.FILES, None, instance=post)
     RecipeFormSet = inlineformset_factory(models.Post, models.Recipe, form=RecipeForm, extra=0)
     if request.user == post.author:
         if form.is_valid():

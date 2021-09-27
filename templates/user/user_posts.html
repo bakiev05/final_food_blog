@@ -1,11 +1,28 @@
 {% extends 'index.html' %}
 {% block content %}
+<h3>User information</h3>
+<div class="card" style="width: 18rem;">
+    <div class="card-header">
+        Is active: {{user_obj.is_active}}
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">Username: {{user_obj.username}}</li>
+        <li class="list-group-item">Bio:{{user_obj.bio}}</li>
+        <li class="list-group-item">Age: {{ user_obj.age }}</li>
+        <li class="list-group-item">Gender: {{ user_obj.gender }}</li>
+        <li class="list-group-item"><a href="{% url 'create_post' %}">Create post</a></li>
+        {% if user_obj.profile %}
+        <img src="{{ user_obj.profile.url }}">
+        {% endif %}
+    </ul>
 
+</div>
+
+<h3 style="margin-left:880px; margin-bottom:50px;"> Your posts</h3>
 {% for post in user_posts %}
 <div class="categories__post__item">
-
-    <div class="categories__post__item__pic small__item set-bg" data-setbg="{{ post.post_image.first.image.url }}"
-         style="width: 308px; height: 255px">
+    <div>
+    <div style="text-align=center; width: 25%; height: 255px ; margin-left:700px;"  class="categories__post__item__pic small__item set-bg" data-setbg="{{ post.image.url }}">
         <div class="post__meta">
             <h4>{{post.create_at|date:"d"}}</h4>
             <span>{{post.create_at|date:"M"}}</span>
@@ -14,6 +31,8 @@
     <div class="categories__post__item__text">
         <span class="post__label">{{post.category}}</span>
         <h3><a href="{{ post.get_absolute_url }}">{{post.title}}</a></h3>
+        <h3><a href="{% url 'update_post' post.id %}">Update this post</a></h3>
+
         <ul class="post__widget">
             <li>by <span>{{post.author}}</span></li>
             <li>3 min read</li>
@@ -23,21 +42,8 @@
     </div>
 </div>
 {% endfor %}
-<h3>User information</h3>
-<div class="card" style="width: 18rem;">
-    <div class="card-header">
-        Featured
-    </div>
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item">Username: {{user_obj.username}}</li>
-        <li class="list-group-item">Bio:{{user_obj.bio}}</li>
-        <li class="list-group-item">Age: {{ user_obj.age }}</li>
-        <li class="list-group-item">Gender: {{ user_obj.gender }}</li>
-        {% if user_obj.profile %}
-        <img src="{{ user_obj.profile.url }}">
-        {% endif %}
-    </ul>
-</div>
+
+
 
 
 {% endblock %}
